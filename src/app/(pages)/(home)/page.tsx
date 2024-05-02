@@ -36,14 +36,14 @@ export default function Page() {
 
 
   return (
-      <div className="overflow-hidden bg-white w-full h-screen p-10 flex flex-col flex-grow bg-white justify-center items-center">
+      <div className="overflow-hidden bg-white w-full h-screen p-10 flex flex-col flex-grow justify-center items-center">
         <div className = "flex items-baseline">
           <h1 className="font-bold font-inter text-9xl pb-4 text-textC">Open Lexica</h1>
           <img src="/book.png" className="ml-4 relative -bottom-5" />
         </div>
           <p className="text-textC font-inter font-normal text-4xl w-1/2 text-center">Wiki made easy.</p>
 
-          <div className="flex flex-col pt-4 space-y-2 w-1/2">
+          <div className="pt-4 space-y-2 w-1/2">
           <form onSubmit={handleSubmit}>
   <div className="flex items-center w-full rounded-3xl border border-4 px-2">
     <input
