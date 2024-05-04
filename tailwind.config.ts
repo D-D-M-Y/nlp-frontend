@@ -14,6 +14,10 @@ const config: Config = {
       colors: {
         'blue': '#529ECE',
         'textC': '#212121',
+        'pastel': '#E1EEF2',
+        'border': '#ADD8E6',
+        'userchat' : '#D6EBF2',
+        'chatbg' : '#F6F6F6',
       },
     },
   },
