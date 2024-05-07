@@ -23,8 +23,8 @@ const Page = () => {
   const [messageState, setMessageState] = useState<MessageState>({
     messages: ['test'],
   });
-  const [builderDataLoaded, setBuilderDataLoaded] = useState(false); //true = values should be shown
-  const [showBuilder, setShowBuilder] = useState(false); //true = values should be shown
+  const [builderDataLoaded, setBuilderDataLoaded] = useState(false);
+  const [showBuilder, setShowBuilder] = useState(false);
   const isLoaded = builderDataLoaded && showBuilder;
 
   // Define the handleSendMessage function
@@ -47,6 +47,33 @@ const Page = () => {
     setShowBuilder(true);
   };
 
+  if (!isLoaded) {
+    return (
+      <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-2 w-full">
+      {/* Left Content (1/2 width) */}
+      <div className="h-full flex flex-row grid-row-2 w-full gap-4">
+        {/* First Column (1/2 width) */}
+        <div className="w-1/2 flex grow flex-col justify-between space-x-2">
+          <div className="flex items-baseline">
+            <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
+            <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
+          </div>
+
+          <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} />
+        </div>
+        {/* Second Column (1/2 width) */}
+        <div className="w-1/2 flex grow flex-col overflow-y-auto font-inter text-textC">
+          <BuilderPlaceholder/>
+        </div>
+      </div>
+      {/* Right Side Content (1/2 width)*/}
+      <div className="w-full bg-pastel flex grow flex-col p-4 border-4 border-border border-l-0 rounded-r-xl overflow-y-auto mb-2 font-inter font-bold text-textC text-3xl" 
+      >
+        <OverviewPlaceholder/>
+      </div>
+    </div>
+    );
+  }
   return (
     <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 gap-4">
     {/* Left Content (1/4 width) */}
