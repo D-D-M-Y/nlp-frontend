@@ -17,3 +17,12 @@
     text-wrap: balance;
   }
 }
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.ttf') format('truetype'),
+}
+
+.font-inter {
+  font-family:    "Inter";
+}
