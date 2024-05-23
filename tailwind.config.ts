@@ -8,9 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily:{
-        inter: ['inter', 'sans-serif'],
-      },
       colors: {
         'blue': '#529ECE',
         'textC': '#212121',
