@@ -21,7 +21,7 @@ npm install -g pnpm
 ```
 
 ## Getting Started
-First, insatll the dependencies and third-party libraries:
+First, install the dependencies and third-party libraries:
 ```
 pnpm i
 ```
@@ -31,7 +31,7 @@ Secondly, run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
 ## Features
 Homepage: Welcome users and provide an overview of Open Lexica.
