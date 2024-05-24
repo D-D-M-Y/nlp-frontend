@@ -7,7 +7,6 @@ Use your input to generate a homepage wiki and a file directory for other wiki f
 Input gathered from you will be used to query NousHermes for content generation.
 Accessible and easy-to-share markdown format.
 Customizable and self-hostable for your specific needs.
-Incorporates real-time information and content generation through Mistral AI.
 Open-source and community-driven development.
 
 # Open Lexica Frontend
