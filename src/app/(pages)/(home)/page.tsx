@@ -14,7 +14,7 @@ export default function Page() {
     errorMessage: '',
   });
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTopicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const topic = event.target.value.trim(); // Trim leading/trailing whitespace
 
     // Check if topic is empty
@@ -26,7 +26,7 @@ export default function Page() {
     event.preventDefault(); // Prevent default form submission behavior
 
     if (!topicState.isValidTopic) {
-      // No need to set error message again, it's already set in handleEmailChange
+      // No need to set error message again, it's already set in handleTopicChange
       return; // Prevent further code execution
     }
 
@@ -51,7 +51,7 @@ export default function Page() {
       id="topic"
       className="w-full rounded-l-3xl px-2 py-4 text-textC outline-none none text-xl font-inter"
       placeholder="Enter a topic"
-      onChange={handleEmailChange}
+      onChange={handleTopicChange}
     />
     <Link href="/wiki-generator" className='items-baseline'>
     <button disabled={!topicState.isValidTopic}>
