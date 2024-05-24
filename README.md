@@ -12,7 +12,7 @@ Open Lexica is an application that generates a complete wiki in markdown files f
 # Open Lexica Frontend
 The frontend of Open Lexica provides an intuitive interface for users to interact with the wiki generator. It allows users to input their business details, customize their wiki, and view the generated content. The frontend is built with modern web technologies to ensure a seamless and responsive user experience.
 
-## Prerequesists 
+## Prerequisites 
 Install Node.js 18 version or higher.
 
 Install pnpm:
@@ -20,7 +20,7 @@ Install pnpm:
 npm install -g pnpm
 ```
 
-## Getting Started
+## How to run
 First, install the dependencies and third-party libraries:
 ```
 pnpm i
