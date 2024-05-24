@@ -23,11 +23,11 @@ const Builder: React.FC<BuilderProps> = ({ topic, headers, onBuilderDataLoaded }
       {headers.map((headerObj, index) => (
         <div key={index} className="pl-2">
           {/* Display the header */}
-          <h2 className="text-xl pl-8 font-bold">{headerObj.header}</h2>
+          <h2 className="text-xl pl-2 font-bold">{headerObj.header}</h2>
           {/* Display the subheader */}
-          <h3 className="text-normal pl-12 italic">{headerObj.subheader}</h3>
+          <h3 className="text-normal pl-8 italic">{headerObj.subheader}</h3>
           {/* Display the page */}
-          <p className="text-sm pl-20 ">{headerObj.page}</p>
+          <p className="text-sm pl-12 ">{headerObj.page}</p>
         </div>
       ))}
     </div>
