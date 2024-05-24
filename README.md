@@ -61,8 +61,6 @@ The frontend of Open Lexica is built using modern web development technologies t
 
 Technologies Used
 React: For building the user interface.
-Redux: For state management.
-Axios: For making HTTP requests to the backend.
 Bootstrap: For responsive design and styling.
 Webpack: For module bundling.
 Babel: For JavaScript transpilation.
