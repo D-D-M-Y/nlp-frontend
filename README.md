@@ -13,8 +13,11 @@ Open-source and community-driven development.
 The frontend of Open Lexica provides an intuitive interface for users to interact with the wiki generator. It allows users to input their business details, customize their wiki, and view the generated content. The frontend is built with modern web technologies to ensure a seamless and responsive user experience.
 
 ## Getting Started
-
-First, run the development server:
+First, insatll the dependencies and third-party libraries:
+```
+pnpm i
+```
+Secondly, run the development server:
 
 ```
 pnpm dev
