@@ -12,6 +12,14 @@ Open-source and community-driven development.
 # Open Lexica Frontend
 The frontend of Open Lexica provides an intuitive interface for users to interact with the wiki generator. It allows users to input their business details, customize their wiki, and view the generated content. The frontend is built with modern web technologies to ensure a seamless and responsive user experience.
 
+## Prerequesists 
+Install Node.js 18 version or higher.
+
+Install pnpm:
+```
+npm install -g pnpm
+```
+
 ## Getting Started
 First, insatll the dependencies and third-party libraries:
 ```
