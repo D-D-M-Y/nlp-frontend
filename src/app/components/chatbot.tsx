@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { Message } from '@/app/components/messages';
 
 interface ChatbotProps {
@@ -9,10 +9,11 @@ interface ChatbotProps {
 }
 
 /** The Chatbot component displays a chatbot interface that allows users to send and receive messages */
-const Chatbot: React.FC<ChatbotProps> = ({ messages, onSendMessage }) => {
-  /** The current value of the input field */
+const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The current value of the input field */
+  /** The current value of the input field */ 
   const [inputValue, setInputValue] = useState('')
-
+  /** An array of messages to be displayed in the chatbot */
+  const [messages, setMessages] = useState<string[]>([]); 
   /** Handles changes to the input field */
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const message = event.target.value.trim()
@@ -27,6 +28,32 @@ const Chatbot: React.FC<ChatbotProps> = ({ messages, onSendMessage }) => {
       setInputValue('')
     }
   }
+  /** Fetch messages from the API endpoint */ 
+  const fetchMessages = async () => { 
+   try { 
+    const response = await fetch('http://127.0.0.1:5000/openlexica/response', { 
+    method: 'POST', 
+    headers: {'Content-Type': 'application/json'}, 
+    
+    body: JSON.stringify({ chat: inputValue }), // Send input value in the request body 
+    
+    }); 
+    
+    if (!response.ok) { 
+      throw new Error('Failed to fetch messages'); 
+    } 
+    const data = await response.json(); 
+    console.log('Response:', data); 
+    setMessages([...messages, data.res]); 
+    } catch (error) { 
+    console.error('Error fetching messages:', error); 
+    } 
+    } 
+    
+    // Fetch messages when the component mounts 
+    useEffect(() => { 
+      fetchMessages(); 
+    }, []); 
 
   return (
     <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
