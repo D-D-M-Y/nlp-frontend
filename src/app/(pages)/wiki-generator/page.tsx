@@ -49,6 +49,7 @@ const Page = () => {
         {/* Right Side Content (1/2 width)*/}
         <Suspense fallback={<Loading/>}>
           <Builder/>
+          <Overview/>
         </Suspense>
 
       </div>
