@@ -31,7 +31,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
   /** Fetch messages from the API endpoint */ 
   const fetchMessages = async () => { 
    try { 
-    const response = await fetch('http://127.0.0.1:5000/openlexica/response', { 
+    const response = await fetch('http://127.0.0.1:10168/openlexica/response', { 
     method: 'POST', 
     headers: {'Content-Type': 'application/json'}, 
     
