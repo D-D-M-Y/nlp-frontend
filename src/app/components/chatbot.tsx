@@ -16,16 +16,19 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
   const [messages, setMessages] = useState<string[]>([]); 
   /** Handles changes to the input field */
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const message = event.target.value.trim()
+    const message = event.target.value
     setInputValue(message)
   }
 
   /** Handles submission of the form */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    console.log(inputValue)
     if (inputValue.trim() !== '') {
-      onSendMessage(inputValue)
-      setInputValue('')
+      onSendMessage(inputValue);
+      setMessages(messages => messages.concat(inputValue));
+      setInputValue('');
+      fetchMessages(); 
     }
   }
   /** Fetch messages from the API endpoint */ 
@@ -44,17 +47,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
     } 
     const data = await response.json(); 
     console.log('Response:', data); 
-    setMessages([...messages, data.res]); 
+    data.res.chatresponse.map((lex_res: string) => (setMessages(messages => messages.concat(lex_res))));
     } catch (error) { 
     console.error('Error fetching messages:', error); 
     } 
     } 
     
-    // Fetch messages when the component mounts 
-    useEffect(() => { 
-      fetchMessages(); 
-    }, []); 
-
   return (
     <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
       {/* Display the chatbot header */}
