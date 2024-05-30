@@ -4,6 +4,7 @@ const require = createRequire(import.meta.url);
 
 const withMDX = require('@next/mdx')()
 const nextConfig = {
+    reactStrictMode: false,
     pageExtensions: ['ts', 'tsx', 'mdx']
 };
 

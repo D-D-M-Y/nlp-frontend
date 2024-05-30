@@ -13,7 +13,7 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
   /** The current value of the input field */ 
   const [inputValue, setInputValue] = useState('')
   /** An array of messages to be displayed in the chatbot */
-  const [messages, setMessages] = useState<string[]>([initial_message]); 
+  const [messages, setMessages] = useState<string[]>([]); 
   /** Handles changes to the input field */
   const [fromBot, setFromValue] = useState<boolean[]>([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,21 +25,21 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (inputValue.trim() !== '') {
-      //onSendMessage(inputValue);
       setMessages(messages => messages.concat(inputValue));
       setFromValue(from => from.concat(false))
       setInputValue('');
-      fetchMessages(); 
+      fetchMessages(inputValue); 
+      console.log("Fire again")
     }
   }
   /** Fetch messages from the API endpoint */ 
-  const fetchMessages = async () => { 
+  const fetchMessages = async (input:string) => { 
    try { 
     const response = await fetch('http://127.0.0.1:10168/openlexica/response', { 
     method: 'POST', 
     headers: {'Content-Type': 'application/json'}, 
     
-    body: JSON.stringify({ chat: inputValue }), // Send input value in the request body 
+    body: JSON.stringify({ chat: input }), // Send input value in the request body 
     
     }); 
     
@@ -62,6 +62,11 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
     } 
     } 
     
+
+    useEffect(() => { 
+      fetchMessages(initial_message); 
+    }, []); 
+
   return (
     <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
       {/* Display the chatbot header */}
