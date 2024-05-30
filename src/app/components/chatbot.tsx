@@ -15,6 +15,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
   /** An array of messages to be displayed in the chatbot */
   const [messages, setMessages] = useState<string[]>([]); 
   /** Handles changes to the input field */
+  const [fromBot, setFromValue] = useState<boolean[]>([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const message = event.target.value
     setInputValue(message)
@@ -27,6 +28,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
     if (inputValue.trim() !== '') {
       onSendMessage(inputValue);
       setMessages(messages => messages.concat(inputValue));
+      setFromValue(from => from.concat(false))
       setInputValue('');
       fetchMessages(); 
     }
@@ -46,8 +48,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
       throw new Error('Failed to fetch messages'); 
     } 
     const data = await response.json(); 
-    console.log('Response:', data); 
-    data.res.chatresponse.map((lex_res: string) => (setMessages(messages => messages.concat(lex_res))));
+    if (typeof data.res.chatresponse === 'string'){
+      setMessages(messages => messages.concat(data.res.chatresponse));
+      setFromValue(from => from.concat(true));
+    }
+    else{
+      data.res.chatresponse.map((lex_res: string) => {
+        setMessages(messages => messages.concat(lex_res));
+        setFromValue(from => from.concat(true));
+      });
+    }
     } catch (error) { 
     console.error('Error fetching messages:', error); 
     } 
@@ -60,7 +70,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
       {/* Display the chatbot messages */}
       <div className="flex flex-col space-y-2 pl-2 pb-2 flex-grow justify-end">
         {messages.map((message, index) => (
-          <Message key={index} message={message} isUserMessage={index % 2 === 0} />
+          <Message key={index} message={message} isUserMessage={fromBot[index]} />
         ))}
         {/* Display the input field and submit button */}
         <form onSubmit={handleSubmit}>
