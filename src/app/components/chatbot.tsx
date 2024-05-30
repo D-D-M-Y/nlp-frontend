@@ -9,11 +9,11 @@ interface ChatbotProps {
 }
 
 /** The Chatbot component displays a chatbot interface that allows users to send and receive messages */
-const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The current value of the input field */
+const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /** The current value of the input field */
   /** The current value of the input field */ 
   const [inputValue, setInputValue] = useState('')
   /** An array of messages to be displayed in the chatbot */
-  const [messages, setMessages] = useState<string[]>([]); 
+  const [messages, setMessages] = useState<string[]>([initial_message]); 
   /** Handles changes to the input field */
   const [fromBot, setFromValue] = useState<boolean[]>([]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (inputValue.trim() !== '') {
-      onSendMessage(inputValue);
+      //onSendMessage(inputValue);
       setMessages(messages => messages.concat(inputValue));
       setFromValue(from => from.concat(false))
       setInputValue('');

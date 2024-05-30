@@ -19,8 +19,9 @@ interface BuilderProps {
 
 // Define the Page component
 const Page = () => {
+  const searchParams = useSearchParams();
   const [messageState, setMessageState] = useState<MessageState>({
-    messages: ['test'],
+    messages: [(searchParams.get("topic"))||''],
   });
 
   // Define the handleSendMessage function
@@ -39,7 +40,7 @@ const Page = () => {
               <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
               <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
             </div>
-            <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} />
+            <Chatbot initial_message={messageState.messages[0]}/>
           </div>
           {/* Second Column (1/2 width) */}
 
