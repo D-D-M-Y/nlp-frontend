@@ -5,6 +5,7 @@ import { Chatbot } from '@/app/components/chatbot';
 import Builder from '@/app/components/builder';
 import Loading from './loading';
 import Overview from '@/app/components/overview';
+import { useSearchParams } from 'next/navigation';
 // Define the MessageState interface
 interface MessageState {
   messages: string[];
@@ -29,9 +30,9 @@ const Page = () => {
 
   {
     return (
-      <div className="overflow-hidden bg-white p-5 w-full h-screen absolute grid grid-cols-4 w-full space-x-4">
+      <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 w-full space-x-4">
         {/* Left Content (1/2 width) */}
-        <div className="flex flex-row grid-row-2 w-full gap-4">
+        <div className="h-[96vh] flex flex-row grid-row-2 w-full gap-4">
           {/* First Column (1/2 width) */}
           <div className="w-full flex grow flex-col justify-between">
             <div className="flex items-baseline">

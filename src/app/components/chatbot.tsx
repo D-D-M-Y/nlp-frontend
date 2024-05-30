@@ -24,7 +24,6 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
   /** Handles submission of the form */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(inputValue)
     if (inputValue.trim() !== '') {
       onSendMessage(inputValue);
       setMessages(messages => messages.concat(inputValue));
@@ -64,7 +63,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onSendMessage }) => {   /** The curre
     } 
     
   return (
-    <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-visible mb-2 p-2">
+    <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
       {/* Display the chatbot header */}
       <h3 className="font-bold font-inter text-xl text-textC p-2">Chatbot</h3>
       {/* Display the chatbot messages */}

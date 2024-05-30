@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 interface TopicState {
+  topic: string;
   isValidTopic: boolean;
   errorMessage: string;
 }
 
 export default function Page() {
   const [topicState, setTopicState] = useState<TopicState>({
+    topic: '',
     isValidTopic: false, // Initial state for disabled button
     errorMessage: '',
   });
@@ -19,7 +21,7 @@ export default function Page() {
 
     // Check if topic is empty
     const isValid = topic !== '';
-    setTopicState({ isValidTopic: isValid, errorMessage: isValid ? '' : 'Please enter a topic.' });
+    setTopicState({ topic: topic, isValidTopic: isValid, errorMessage: isValid ? '' : 'Please enter a topic.' });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +55,7 @@ export default function Page() {
       placeholder="Enter a topic"
       onChange={handleTopicChange}
     />
-    <Link href="/wiki-generator" className='items-baseline'>
+    <Link href={{ pathname: '/wiki-generator', query: {topic:topicState.topic}}} className='items-baseline'>
     <button disabled={!topicState.isValidTopic}>
         <img src="/sent.svg" alt="Open Wiki Generator" className="mr-2 relative -bottom-1" />
       </button>
