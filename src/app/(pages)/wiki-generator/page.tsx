@@ -29,16 +29,15 @@ const Page = () => {
 
   {
     return (
-      <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 w-full space-x-4">
+      <div className="overflow-hidden bg-white p-5 w-full h-screen absolute grid grid-cols-4 w-full space-x-4">
         {/* Left Content (1/2 width) */}
-        <div className="h-full flex flex-row grid-row-2 w-full gap-4">
+        <div className="flex flex-row grid-row-2 w-full gap-4">
           {/* First Column (1/2 width) */}
           <div className="w-full flex grow flex-col justify-between">
             <div className="flex items-baseline">
               <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
               <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
             </div>
-
             <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} />
           </div>
           {/* Second Column (1/2 width) */}
