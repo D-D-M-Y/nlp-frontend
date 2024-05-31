@@ -20,14 +20,9 @@ interface BuilderProps {
 // Define the Page component
 const Page = () => {
   const searchParams = useSearchParams();
-  const [messageState, setMessageState] = useState<MessageState>({
+  const [messageState] = useState<MessageState>({
     messages: [(searchParams.get("topic"))||''],
   });
-
-  // Define the handleSendMessage function
-  const handleSendMessage = (message: string) => {
-    setMessageState({ messages: [...messageState.messages, message] });
-  };
 
   {
     return (

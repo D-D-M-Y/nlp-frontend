@@ -20,6 +20,11 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
     const message = event.target.value
     setInputValue(message)
   }
+  const [context, setContext] = useState('');
+  const [company, setCompany] = useState('');
+  const [goal, setGoal] = useState('');
+  const [audience, setAudience] = useState('');
+  const [structure, setStructure] = useState('');
 
   /** Handles submission of the form */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -29,7 +34,6 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
       setFromValue(from => from.concat(false))
       setInputValue('');
       fetchMessages(inputValue); 
-      console.log("Fire again")
     }
   }
   /** Fetch messages from the API endpoint */ 
@@ -57,12 +61,34 @@ const Chatbot: React.FC<{initial_message:string}> = ({initial_message}) => {   /
         setFromValue(from => from.concat(true));
       });
     }
-    } catch (error) { 
-    console.error('Error fetching messages:', error); 
-    } 
+    if (typeof data.res.company === 'string'){
+      setCompany(company => data.res.company)
+    }
+    if (typeof data.res.goal === 'string'){
+      setGoal(goal => data.res.goal)
+    }
+    if (typeof data.res.audience === 'string'){
+      setAudience(audience => data.res.audience)
+    }
+    if (typeof data.res.structure === 'string'){
+      setStructure(structure => data.res.structure)
+    }
+  }   catch (error) { 
+      console.error('Error fetching messages:', error); 
+      } 
     } 
     
-
+    useEffect(() => { 
+      console.log(company); 
+      console.log(goal); 
+      console.log(audience);
+      console.log(structure);
+      if (company != '' && goal != '' && audience != '' && structure != ''){
+        setContext(company+' '+goal+' '+audience+' '+structure)
+      }
+      console.log (context)
+    }, [company, goal, audience, structure, context]); 
+    
     useEffect(() => { 
       fetchMessages(initial_message); 
     }, []); 
