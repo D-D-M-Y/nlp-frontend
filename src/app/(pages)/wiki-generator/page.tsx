@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Chatbot } from '@/app/components/chatbot';
 import Builder from '@/app/components/builder';
 import Loading from './loading';
@@ -20,10 +20,70 @@ interface BuilderProps {
 // Define the Page component
 const Page = () => {
   const searchParams = useSearchParams();
-  const [messageState] = useState<MessageState>({
+  const [messageState, setMessageState] = useState<MessageState>({
     messages: [(searchParams.get("topic"))||''],
   });
+  const [context, setContext] = useState('');
+  const [company, setCompany] = useState('');
+  const [goal, setGoal] = useState('');
+  const [audience, setAudience] = useState('');
+  const [structure, setStructure] = useState('');
+  const [fromBot, setFromValue] = useState<boolean[]>([]);
 
+  const handleSendMessage = (message: string) => {
+    setMessageState({ messages: [...messageState.messages, message] });
+    setFromValue(from => from.concat(false))
+  };
+
+
+  /** Fetch messages from the API endpoint */ 
+  const fetchMessages = async (input:string) => { 
+    try { 
+     const response = await fetch('http://127.0.0.1:10168/openlexica/response', { 
+     method: 'POST', 
+     headers: {'Content-Type': 'application/json'}, 
+     
+     body: JSON.stringify({ chat: input }), // Send input value in the request body 
+     
+     }); 
+     
+     if (!response.ok) { 
+       throw new Error('Failed to fetch messages'); 
+     } 
+     const data = await response.json(); 
+     if (typeof data.res.chatresponse === 'string'){
+       setMessageState({messages:[...messageState.messages, data.res.chatresponse]});
+       setFromValue(from => from.concat(true));
+     }
+     else{
+       data.res.chatresponse.map((lex_res: string) => {
+         setMessageState({messages:[...messageState.messages, lex_res]});
+         setFromValue(from => from.concat(true));
+       });
+     }
+     if (typeof data.res.company === 'string'){
+       setCompany(company => data.res.company)
+     }
+     if (typeof data.res.goal === 'string'){
+       setGoal(goal => data.res.goal)
+     }
+     if (typeof data.res.audience === 'string'){
+       setAudience(audience => data.res.audience)
+     }
+     if (typeof data.res.structure === 'string'){
+       setStructure(structure => data.res.structure)
+     }
+   }   catch (error) { 
+       console.error('Error fetching messages:', error); 
+       } 
+     } 
+
+    useEffect(() =>{console.log(messageState.messages)},[messageState])
+    useEffect(() =>{
+      setFromValue(from => from.concat(false));
+      fetchMessages(messageState.messages[0]);
+      console.log(messageState.messages)
+    },[])
   {
     return (
       <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 w-full space-x-4">
@@ -35,7 +95,7 @@ const Page = () => {
               <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
               <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
             </div>
-            <Chatbot initial_message={messageState.messages[0]}/>
+            <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} from={fromBot}/>
           </div>
           {/* Second Column (1/2 width) */}
 
