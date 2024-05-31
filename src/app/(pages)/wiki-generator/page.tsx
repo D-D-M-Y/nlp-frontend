@@ -31,8 +31,9 @@ const Page = () => {
   const [fromBot, setFromValue] = useState<boolean[]>([]);
 
   const handleSendMessage = (message: string) => {
-    setMessageState({ messages: [...messageState.messages, message] });
-    setFromValue(from => from.concat(false))
+    setMessageState(messagestate => ({ messages: messagestate.messages.concat(message) }));
+    setFromValue(from => from.concat(false));
+    fetchMessages(message);
   };
 
 
@@ -52,12 +53,12 @@ const Page = () => {
      } 
      const data = await response.json(); 
      if (typeof data.res.chatresponse === 'string'){
-       setMessageState({messages:[...messageState.messages, data.res.chatresponse]});
+       setMessageState(message => ({messages: message.messages.concat(data.res.chatresponse)}));
        setFromValue(from => from.concat(true));
      }
      else{
        data.res.chatresponse.map((lex_res: string) => {
-         setMessageState({messages:[...messageState.messages, lex_res]});
+         setMessageState(message => ({messages: message.messages.concat(lex_res)}));
          setFromValue(from => from.concat(true));
        });
      }
@@ -78,7 +79,22 @@ const Page = () => {
        } 
      } 
 
-    useEffect(() =>{console.log(messageState.messages)},[messageState])
+    useEffect(() =>{console.log(messageState.messages);},[messageState])
+    useEffect(() =>{
+      console.log(company);
+      console.log(goal);
+      console.log(audience);
+      console.log(structure);
+      if (company != '' && goal != '' && audience != '' && structure != ''){
+        setContext(company+'. '+goal+'. '+audience+'. '+structure)
+        console.log(context)
+      }
+    },
+    [company, goal, audience, structure])
+    useEffect(() => {
+
+    },
+      [context])
     useEffect(() =>{
       setFromValue(from => from.concat(false));
       fetchMessages(messageState.messages[0]);
