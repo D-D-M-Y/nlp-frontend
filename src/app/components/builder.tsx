@@ -1,4 +1,4 @@
-import { getFileTitles } from "../lib/data";
+
   
 
 export default async function Builder({content}:{content:string}){

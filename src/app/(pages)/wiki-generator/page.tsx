@@ -180,7 +180,7 @@ const Page = async () => {
               ))}
               </div>
             </div>
-            <Overview content={titles.fileContent}/>
+            <Overview title={titles.title} content={titles.fileContent}/>
           </Suspense> 
         </ErrorBoundary>
 
