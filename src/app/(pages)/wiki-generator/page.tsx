@@ -6,19 +6,24 @@ import Builder from '@/app/components/builder';
 import Loading from './loading';
 import Overview from '@/app/components/overview';
 import { useSearchParams } from 'next/navigation';
+import { generateFileContent, getFileData, getFileTitles } from '@/app/lib/data';
+import {ErrorBoundary} from 'react-error-boundary'
+
 // Define the MessageState interface
 interface MessageState {
   messages: string[];
 }
 
 // Define the BuilderProps interface
-interface BuilderProps {
-  topic: string;
-  headers: { header: string; subheader: string; page: string; }[];
+interface TitleGroup{
+  title: string;
+  titles: string[]
+  fileContent: string;
 }
 
+
 // Define the Page component
-const Page = () => {
+const Page = async () => {
   const searchParams = useSearchParams();
   const [messageState, setMessageState] = useState<MessageState>({
     messages: [(searchParams.get("topic"))||''],
@@ -29,6 +34,19 @@ const Page = () => {
   const [audience, setAudience] = useState('');
   const [structure, setStructure] = useState('');
   const [fromBot, setFromValue] = useState<boolean[]>([]);
+  const [titles, setTitles] = useState<TitleGroup>({title: '', titles: [], fileContent:''});
+  
+  const fetchTitles = async () => {
+    try{
+    const localTitles = await getFileTitles();
+    if (Array.isArray(localTitles) && localTitles.every(x => typeof x === 'string')){
+      setTitles(_ => ({title:localTitles[0], titles:localTitles, fileContent:_.fileContent}));
+    }
+    } catch (error){
+
+    } 
+    
+  }
 
   const handleSendMessage = (message: string) => {
     setMessageState(messagestate => ({ messages: messagestate.messages.concat(message) }));
@@ -36,7 +54,11 @@ const Page = () => {
     fetchMessages(message);
   };
 
-
+  const handleChangeTopic = async(topic: string) => {
+    const callContent = getFileData(topic)
+    const content = await callContent
+    setTitles(prevTitle => ({title:topic, titles:prevTitle.titles, fileContent: content}));
+  }
   /** Fetch messages from the API endpoint */ 
   const fetchMessages = async (input:string) => { 
     try { 
@@ -63,16 +85,16 @@ const Page = () => {
        });
      }
      if (typeof data.res.company === 'string'){
-       setCompany(company => data.res.company)
+       setCompany(_ => data.res.company)
      }
      if (typeof data.res.goal === 'string'){
-       setGoal(goal => data.res.goal)
+       setGoal(_ => data.res.goal)
      }
      if (typeof data.res.audience === 'string'){
-       setAudience(audience => data.res.audience)
+       setAudience(_ => data.res.audience)
      }
      if (typeof data.res.structure === 'string'){
-       setStructure(structure => data.res.structure)
+       setStructure(_ => data.res.structure)
      }
    }   catch (error) { 
        console.error('Error fetching messages:', error); 
@@ -80,7 +102,8 @@ const Page = () => {
      } 
 
     useEffect(() =>{console.log(messageState.messages);},[messageState])
-    useEffect(() =>{
+
+    useEffect(()=>{
       console.log(company);
       console.log(goal);
       console.log(audience);
@@ -91,15 +114,39 @@ const Page = () => {
       }
     },
     [company, goal, audience, structure])
-    useEffect(() => {
 
+    useEffect(() => {
+      console.log(context)
+      if (!(titles.title != '')){
+        console.log("Hello")
+        if (context != ''){
+        try {
+          generateFileContent(context);
+        } catch (error){
+          console.log("Error generating files")
+        } finally
+        {
+          fetchTitles()
+        }
+        console.log(titles)
+     }
+    }
     },
-      [context])
-    useEffect(() =>{
+      [context]);
+
+      useEffect(() => {
+        console.log(titles)
+        if (Array.isArray(titles.titles) && titles.titles.every(x => typeof x === 'string') && titles.fileContent === ''){
+        }
+      }, [titles])
+
+
+    useEffect(() => {
+      fetchTitles();
       setFromValue(from => from.concat(false));
       fetchMessages(messageState.messages[0]);
       console.log(messageState.messages)
-    },[])
+    },[]);
   {
     return (
       <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 w-full space-x-4">
@@ -119,10 +166,23 @@ const Page = () => {
 
         </div>
         {/* Right Side Content (1/2 width)*/}
-        <Suspense fallback={<Loading/>}>
-          <Builder/>
-          <Overview/>
-        </Suspense>
+        <ErrorBoundary fallback={<Loading/>}>
+          <Suspense fallback={<Loading/>}>
+            <div className="w-full flex grow flex-col overflow-y-auto font-inter text-textC">
+              <div className="w-full border-4 border-border border-r-0 rounded-l-xl flex grow flex-col p-4 overflow-y-auto mb-2 font-inter text-textC text-3xl">
+            {/* Display the topic */}
+            {/* Map over the headers array and display each header object */}
+            {(await titles.titles).map((content: string, index: number) => 
+              (
+              <div onClick={() => {handleChangeTopic(content)}}>
+              <Builder content={content}/>
+              </div>
+              ))}
+              </div>
+            </div>
+            <Overview content={titles.fileContent}/>
+          </Suspense> 
+        </ErrorBoundary>
 
       </div>
     );
