@@ -35,6 +35,7 @@ const Page = async () => {
   const [structure, setStructure] = useState('');
   const [fromBot, setFromValue] = useState<boolean[]>([]);
   const [titles, setTitles] = useState<TitleGroup>({title: '', titles: [], fileContent:''});
+  const [showBuilder, setShowBuilder] = useState(false);
   
   const fetchTitles = async () => {
     try{
@@ -59,6 +60,15 @@ const Page = async () => {
     const content = await callContent
     setTitles(prevTitle => ({title:topic, titles:prevTitle.titles, fileContent: content}));
   }
+
+  const handleToggleBuilder = () => {
+    setShowBuilder(false);
+  }
+
+  const handleToggleChatbot = () => {
+    setShowBuilder(true);
+  };
+
   /** Fetch messages from the API endpoint */ 
   const fetchMessages = async (input:string) => { 
     try { 
@@ -147,7 +157,8 @@ const Page = async () => {
       fetchMessages(messageState.messages[0]);
       console.log(messageState.messages)
     },[]);
-  {
+  
+    if (titles.title == '' || titles.title==undefined){
     return (
       <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 w-full space-x-4">
         {/* Left Content (1/2 width) */}
@@ -158,62 +169,80 @@ const Page = async () => {
               <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
               <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
             </div>
+            <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
             <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} from={fromBot}/>
+            </div>
           </div>
           {/* Second Column (1/2 width) */}
 
-            
+
 
         </div>
         {/* Right Side Content (1/2 width)*/}
         <ErrorBoundary fallback={<Loading/>}>
           <Suspense fallback={<Loading/>}>
-            <div className="w-full flex grow flex-col overflow-y-auto font-inter text-textC">
-              <div className="w-full border-4 border-border border-r-0 rounded-l-xl flex grow flex-col p-4 overflow-y-auto mb-2 font-inter text-textC text-3xl">
             {/* Display the topic */}
             {/* Map over the headers array and display each header object */}
+            {/* <div className="w-full flex grow flex-col overflow-y-auto font-inter text-textC">
+              <div className="w-full border-4 border-border border-r-0 rounded-l-xl flex grow flex-col p-4 overflow-y-auto mb-2 font-inter text-textC text-3xl">
+            
             {(await titles.titles).map((content: string, index: number) => 
               (
               <div onClick={() => {handleChangeTopic(content)}}>
               <Builder content={content}/>
               </div>
               ))}
+              
               </div>
             </div>
+            <div className="w-full bg-pastel flex grow flex-row col-span-2 p-4 border-4 border-border border-l-0 rounded-r-xl overflow-y-auto mb-2 font-inter text-textC text-3xl" 
+        >
             <Overview title={titles.title} content={titles.fileContent}/>
+            </div> */}
+            <Loading/>
           </Suspense> 
         </ErrorBoundary>
 
       </div>
     );
-  }
-  // return (
-  //   <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 gap-4">
-  //   {/* Left Content (1/4 width) */}
-  //   <div className="h-full w-full flex flex-col justify-between space-x-2">
-  //     <div className="flex items-baseline">
-  //       <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
-  //       <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
-  //     </div>
-  //     {showBuilder? (
-  //         <>
-  //          <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" onClick={handleToggleBuilder}>Toggle to Chatbot</button>
-  //           <Builder topic={'Food'} headers={[]} onBuilderDataLoaded={handleBuilderDataLoaded} />
-  //           <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" >Export</button>
-  //         </>
-  //       ) : (
-  //         <>
-  //         <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" onClick={handleToggleChatbot}>Toggle to File Directory</button>
-  //         <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} />
-  //         </>
-  //       )}
-  //   </div>
-  //   {/* Right Side Content (3/4 width) */}
-  //   <div className="w-full h-full bg-pastel col-span-3 flex grow flex-col p-4 border-4 border-border rounded-xl overflow-y-auto mb-2 font-inter font-bold text-textC text-3xl">
-  //     <Overview topic={'Food'} details={[""]} />
-  //   </div>
-  // </div>
-  // )
-};
-
+  } else {
+  return (
+    <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 gap-4">
+    {/* Left Content (1/4 width) */}
+    <div className="h-full w-full flex flex-col justify-between space-x-2">
+      <div className="flex items-baseline">
+        <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
+        <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
+      </div>
+      {showBuilder? (
+          <>
+           <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" onClick={handleToggleBuilder}>Toggle to Chatbot</button>
+           <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
+            {(await titles.titles).map((content: string, index: number) => 
+                (
+                <div onClick={() => {handleChangeTopic(content)}}>
+                
+                <Builder content={content}/>
+                </div>
+                ))}
+              </div>
+            <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" >Export</button>
+          </>
+        ) : (
+          <>
+          <button className="border-4 rounded-xl mt-2 p-2 border-border bg-pastel font-inter text-textC font-bold text-xl" onClick={handleToggleChatbot}>Toggle to File Directory</button>
+          <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
+          <Chatbot messages={messageState.messages} onSendMessage={handleSendMessage} from={fromBot}/>
+          </div>
+          </>
+        )}
+    </div>
+    {/* Right Side Content (3/4 width) */}
+    <div className="w-full h-full bg-pastel col-span-3 flex grow flex-col p-4 border-4 border-border rounded-xl overflow-y-auto mb-2 font-inter text-textC text-3xl">
+    <Overview title={titles.title} content={titles.fileContent}/>
+    </div>
+  </div>
+  )
+  };
+}
 export default Page;

@@ -32,7 +32,7 @@ const Chatbot: React.FC<ChatbotProps> = ({messages, onSendMessage, from}) => {  
 
 
   return (
-    <div className="flex flex-col grow border-4 border-border rounded-lg mt-5 overflow-y-auto mb-2 p-2">
+    <>
       {/* Display the chatbot header */}
       <h3 className="font-bold font-inter text-xl text-textC p-2">Chatbot</h3>
       {/* Display the chatbot messages */}
@@ -58,7 +58,7 @@ const Chatbot: React.FC<ChatbotProps> = ({messages, onSendMessage, from}) => {  
           </div>
         </form>
       </div>
-    </div>
+    </>
   )
 }
 
