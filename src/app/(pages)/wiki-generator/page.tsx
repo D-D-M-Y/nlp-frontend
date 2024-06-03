@@ -44,10 +44,14 @@ const Page = async () => {
       setTitles(_ => ({title:localTitles[0], titles:localTitles, fileContent:_.fileContent}));
     }
     } catch (error){
-
+      //do nothing
     } 
     
   }
+  const generateAndUpdateTitles = async (context:string) =>{
+    await generateFileContent(context);
+    fetchTitles();
+  }  
 
   const handleSendMessage = (message: string) => {
     setMessageState(messagestate => ({ messages: messagestate.messages.concat(message) }));
@@ -131,12 +135,9 @@ const Page = async () => {
         console.log("Hello")
         if (context != ''){
         try {
-          generateFileContent(context);
+          generateAndUpdateTitles(context);
         } catch (error){
-          console.log("Error generating files")
-        } finally
-        {
-          fetchTitles()
+          console.log("Can't generate files")
         }
         console.log(titles)
      }
@@ -209,7 +210,7 @@ const Page = async () => {
   return (
     <div className="overflow-hidden bg-white p-5 w-full h-screen relative grid grid-cols-4 gap-4">
     {/* Left Content (1/4 width) */}
-    <div className="h-full w-full flex flex-col justify-between space-x-2">
+    <div className="h-[96vh] w-full flex flex-col justify-between space-x-2">
       <div className="flex items-baseline">
         <h1 className="font-bold font-inter text-2xl text-textC">Open Lexica</h1>
         <img src="/book.png" className="ml-2 relative -bottom-2 h-10" />
