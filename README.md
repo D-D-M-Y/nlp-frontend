@@ -1,6 +1,8 @@
 # Open Lexica
 an open-source AI wiki generator 
 
+![Open Lexica Demo](public/demo.gif)
+
 Open Lexica is an application that generates a complete wiki in markdown files for your company using the power of language models.
 
 - Use your input to generate a homepage wiki and a file directory for other wiki files.
@@ -45,4 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 Technologies Used
 - React: For building the user interface.
 - TailwindCSS: For responsive design and styling.
+
+## Additional Notes
+If using this with [Open Lexica Backend](https://github.com/D-D-M-Y/nlp-backend), make sure to set the running port to 10168 as all the api calls here use that port.
 
